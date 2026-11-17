@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 scikit-learn
-pandas
+pandas==2.2.3
 mlflow
 pydantic
 evidently
