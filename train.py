@@ -9,6 +9,9 @@ from sklearn.metrics import accuracy_score
 
 def train_model():
 
+    # Use the same MLflow database as the application
+    mlflow.set_tracking_uri("sqlite:///mlflow.db")
+
     iris = load_iris()
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -36,13 +39,17 @@ def train_model():
         mlflow.log_metric("accuracy", accuracy)
 
         mlflow.sklearn.log_model(
-            model,
-            "model",
-            registered_model_name="IrisRandomForest"
+            sk_model=model,
+            name="model",
+            registered_model_name="IrisRandomForest",
+            skops_trusted_types=[
+                "sklearn.tree._tree.Tree"
+            ]
         )
 
         print("Training completed!")
         print("Accuracy:", accuracy)
+        print("Model registered successfully!")
 
 
 if __name__ == "__main__":
